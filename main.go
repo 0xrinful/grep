@@ -34,7 +34,7 @@ func main() {
 		os.Exit(2)
 	}
 
-	pattern := os.Args[1]
+	pattern := args[0]
 	handler := getMatchHandler(flags)
 
 	var found bool
