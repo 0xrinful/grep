@@ -10,9 +10,19 @@ const (
 	Space
 )
 
+type Quantifier int
+
+const (
+	One Quantifier = iota
+	ZeroOrMore
+	OneOrMore
+	ZeroOrOne
+)
+
 type Token struct {
-	kind TokenType
-	ch   byte
+	kind  TokenType
+	ch    byte
+	quant Quantifier
 }
 
 func tokenize(pattern string) []Token {
@@ -37,6 +47,12 @@ func tokenize(pattern string) []Token {
 				}
 				i++
 			}
+		case '*':
+			tokens[len(tokens)-1].quant = ZeroOrMore
+		case '+':
+			tokens[len(tokens)-1].quant = OneOrMore
+		case '?':
+			tokens[len(tokens)-1].quant = ZeroOrOne
 		default:
 			tokens = append(tokens, Token{kind: Literal, ch: pattern[i]})
 		}
